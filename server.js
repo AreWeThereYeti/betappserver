@@ -14,5 +14,5 @@ app.post('/bets', bets.addBet);
 app.put('/bets/:id', bets.updateBet);
 app.delete('/bets/:id', bets.deleteBet);
  
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 console.log('Listening on port 3000...');
