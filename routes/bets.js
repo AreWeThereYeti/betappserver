@@ -5,7 +5,7 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
  
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('Betsdb', server);
+db = new Db('betsdb', server);
  
 db.open(function(err, db) {
     if(!err) {
