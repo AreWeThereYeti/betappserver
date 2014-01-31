@@ -27,7 +27,7 @@ db.open(function(err, db) {
 
 // Initialize connection once, reuse the database object 
 
-mongodb.MongoClient.connect(MONGODB_URI, { server: { logger: logger(MONGODB_URI) } }, function(err, database) {
+mongo.Db.connect(MONGODB_URI, { server: { logger: logger(MONGODB_URI) } }, function(err, database) {
   if(err) throw err;
  
   db = database;
