@@ -1,9 +1,14 @@
 var mongo = require('mongodb');
  
+/*
 var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
- 
+*/
+var MONGODB_URI = process.env.MONGOLAB_URI;
+var db;
+//var coll; 
+/*
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 db = new Db('Betsdb', server);
  
@@ -18,6 +23,27 @@ db.open(function(err, db) {
         });
     }
 });
+*/
+
+// Initialize connection once, reuse the database object 
+
+mongodb.MongoClient.connect(MONGODB_URI, { server: { logger: logger(MONGODB_URI) } }, function(err, database) {
+  if(err) throw err;
+ 
+  db = database;
+  db.collection('bets', {strict:true}, function(err, collection) {
+            if (err) {
+                console.log("The 'Bets' collection doesn't exist. Creating it with sample data...");
+                populateDB();
+            }
+  });
+
+
+  app.listen(process.env.PORT ||3000);
+  console.log('Listening on port 3000');
+});
+
+
  
 exports.findById = function(req, res) {
     var id = req.params.id;
