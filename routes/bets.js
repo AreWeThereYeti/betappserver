@@ -63,14 +63,18 @@ mongo.MongoClient.connect(mongoUri, function(err, db) {
 
 
 exports.findById = function(req, res) {
-    var id = req.params.id;
-    console.log('Retrieving bet: ' + id);
-    
-    db.collection('bets', function(err, collection) {
-        collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
-            res.send(item);
-        });
-    });
+    mongo.MongoClient.connect(mongoUri, function(err, db) {
+	    if(!err) {    
+		    var id = req.params.id;
+		    console.log('Retrieving bet: ' + id);
+		    
+		    db.collection('bets', function(err, collection) {
+		        collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+		            res.send(item);
+		        });
+		    });
+    	}
+	});
 };
 
  
@@ -88,51 +92,63 @@ exports.findAll = function(req, res) {
 };
  
 exports.addBet = function(req, res) {
-    var bet = req.body;
-    console.log('Adding bet: ' + JSON.stringify(bet));
-    db.collection('bets', function(err, collection) {
-        collection.insert(bet, {safe:true}, function(err, result) {
-            if (err) {
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('Success: ' + JSON.stringify(result[0]));
-                res.send(result[0]);
-            }
-        });
-    });
+    mongo.MongoClient.connect(mongoUri, function(err, db) {
+	    if(!err) {
+		    var bet = req.body;
+		    console.log('Adding bet: ' + JSON.stringify(bet));
+		    db.collection('bets', function(err, collection) {
+		        collection.insert(bet, {safe:true}, function(err, result) {
+		            if (err) {
+		                res.send({'error':'An error has occurred'});
+		            } else {
+		                console.log('Success: ' + JSON.stringify(result[0]));
+		                res.send(result[0]);
+		            }
+		        });
+		    });
+		}
+	});    
 }
  
 exports.updateBet = function(req, res) {
-    var id = req.params.id;
-    var bet = req.body;
-    console.log('Updating bet: ' + id);
-    console.log(JSON.stringify(bet));
-    db.collection('bets', function(err, collection) {
-        collection.update({'_id':new BSON.ObjectID(id)}, bet, {safe:true}, function(err, result) {
-            if (err) {
-                console.log('Error updating bet: ' + err);
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('' + result + ' document(s) updated');
-                res.send(bet);
-            }
-        });
-    });
+    mongo.MongoClient.connect(mongoUri, function(err, db) {
+	    if(!err) {
+		    var id = req.params.id;
+		    var bet = req.body;
+		    console.log('Updating bet: ' + id);
+		    console.log(JSON.stringify(bet));
+		    db.collection('bets', function(err, collection) {
+		        collection.update({'_id':new BSON.ObjectID(id)}, bet, {safe:true}, function(err, result) {
+		            if (err) {
+		                console.log('Error updating bet: ' + err);
+		                res.send({'error':'An error has occurred'});
+		            } else {
+		                console.log('' + result + ' document(s) updated');
+		                res.send(bet);
+		            }
+		        });
+		    });
+		}
+	});  
 }
  
 exports.deleteBet = function(req, res) {
-    var id = req.params.id;
-    console.log('Deleting bet: ' + id);
-    db.collection('bets', function(err, collection) {
-        collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
-            if (err) {
-                res.send({'error':'An error has occurred - ' + err});
-            } else {
-                console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
-            }
-        });
-    });
+    mongo.MongoClient.connect(mongoUri, function(err, db) {
+	    if(!err) {
+		    var id = req.params.id;
+		    console.log('Deleting bet: ' + id);
+		    db.collection('bets', function(err, collection) {
+		        collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
+		            if (err) {
+		                res.send({'error':'An error has occurred - ' + err});
+		            } else {
+		                console.log('' + result + ' document(s) deleted');
+		                res.send(req.body);
+		            }
+		        });
+		    });
+		}
+	});  
 }
  
 /*--------------------------------------------------------------------------------------------------------------------*/
