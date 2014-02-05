@@ -1,5 +1,6 @@
 var express = require('express');
 bets = require('./routes/bets');
+auth = require('./routes/auth');
  
 var app = express();
  
@@ -15,6 +16,7 @@ app.put('/bets/:id', bets.updateBet);
 app.delete('/bets/:id', bets.deleteBet);
 
 app.post('/auth', auth.addUser);
+app.get('/auth', auth.findAll); 
  
 app.listen( process.env.PORT || 3000);
 console.log('Listening on port 3000...');
