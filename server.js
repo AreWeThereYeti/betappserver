@@ -13,6 +13,8 @@ app.get('/bets/:id', bets.findById);
 app.post('/bets', bets.addBet);
 app.put('/bets/:id', bets.updateBet);
 app.delete('/bets/:id', bets.deleteBet);
+
+app.post('/auth', auth.addUser);
  
 app.listen( process.env.PORT || 3000);
 console.log('Listening on port 3000...');
