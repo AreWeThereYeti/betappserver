@@ -7,6 +7,7 @@ var app = express();
 app.configure(function () {
   app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
   app.use(express.bodyParser());
+  app.use(allowCrossDomain);
 });
  
 app.get('/bets', bets.findAll);
