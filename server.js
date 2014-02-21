@@ -1,11 +1,12 @@
 var express = require('express');
+cors = require('cors');
 bets = require('./routes/bets');
 auth = require('./routes/auth');
  
 var app = express();
  
 app.configure(function () {
-  app.use(allowCrossDomain);
+  app.use(cors());
   app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
   app.use(express.bodyParser());
 });
