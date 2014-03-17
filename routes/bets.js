@@ -4,6 +4,7 @@
 var mongo = require('mongodb');
 
 
+
 // mongolab on heroku or local
 
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bets';
@@ -42,6 +43,7 @@ mongo.MongoClient.connect(mongoUri, function(err, db) {
 });
 
 
+
 // Finds and returns all bets where 'username' is either author or participant 
 
 exports.findBetsForUser = function(req, res) {
@@ -57,7 +59,7 @@ exports.findBetsForUser = function(req, res) {
 		    });
     	}
 	});
->>>>>>> FETCH_HEAD
+
 };
 
  
@@ -91,7 +93,7 @@ exports.addBet = function(req, res) {
 		    });
 		}
 	});    
-}
+};
  
 exports.updateBet = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
@@ -113,7 +115,7 @@ exports.updateBet = function(req, res) {
 		    });
 		}
 	});  
-}
+};
  
 exports.deleteBet = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
@@ -132,5 +134,6 @@ exports.deleteBet = function(req, res) {
 		    });
 		}
 	});  
-}
+};
  
+
