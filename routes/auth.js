@@ -54,7 +54,7 @@ exports.findAll = function(req, res) {
 	        console.log("Connected to 'Auth' database");
 	        db.collection('auth', {strict:true}, function(err, collection) {
 	        	collection.find().toArray(function(err, items) {
-	            res.send(items);
+	            	res.send(items);
 				});
 			});
 		}

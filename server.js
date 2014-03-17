@@ -12,7 +12,7 @@ app.configure(function () {
 });
  
 app.get('/bets', bets.findAll);
-app.get('/bets/:id', bets.findById);
+app.get('/bets/:username', bets.findBetsForUser);
 app.post('/bets', bets.addBet);
 app.put('/bets/:id', bets.updateBet);
 app.delete('/bets/:id', bets.deleteBet);

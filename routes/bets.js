@@ -25,7 +25,7 @@ db.open(function(err, db) {
  
 */
 
-// mongolab on heroku or local?
+// mongolab on heroku or local
 
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bets';
 
@@ -38,16 +38,19 @@ mongo.MongoClient.connect(mongoUri, function(err, db) {
                 
                     var bets = [
 								{
-							        nameOfBetter: "Petter",
+							        participant: "Petter",
 							        bet: "Din mor laver bedre mad end min mor",
 							        deadline: "1. juli 2014",
-							        price:"6 sort guld" 
+							        price:"6 sort guld",
+							        author: "Mikkel"
+							         
 							    },
 							    {
-							        nameOfBetter: "Søren",
+							        participant: "Søren",
 							        bet: "Din far laver bedre cykler end min mor",
 							        deadline: "1. juni 2014",
-							        price:"12 sort guld" 
+							        price:"12 sort guld",
+							        author: "Petter" 
 							    }];
  
 			    db.collection('bets', function(err, collection) {
@@ -60,17 +63,17 @@ mongo.MongoClient.connect(mongoUri, function(err, db) {
 });
 
 
+// Finds and returns all bets where 'username' is either author or participant 
 
-
-exports.findById = function(req, res) {
+exports.findBetsForUser = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
 	    if(!err) {    
-		    var id = req.params.id;
-		    console.log('Retrieving bet: ' + id);
+		    var username = req.params.username;
+		    console.log('Retrieving bets made by and with: ' + username);
 		    
-		    db.collection('bets', function(err, collection) {
-		        collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
-		            res.send(item);
+		    db.collection('bets', {strict:true}, function(err, collection) {
+		        collection.find({  $or:[{author: username}, {participant: username}] }).toArray(function(err, items) {
+		            res.send(items);
 		        });
 		    });
     	}
@@ -84,7 +87,7 @@ exports.findAll = function(req, res) {
 	        console.log("Connected to 'Bets' database");
 	        db.collection('bets', {strict:true}, function(err, collection) {
 	        	collection.find().toArray(function(err, items) {
-	            res.send(items);
+	            	res.send(items);
 				});
 			});
 		}
