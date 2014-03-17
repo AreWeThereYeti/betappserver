@@ -1,11 +1,10 @@
-// local setup
 
 
 var mongo = require('mongodb');
 
 
 
-// mongolab on heroku or local
+// mongolab on heroku or local port 27017
 
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/bets';
 
