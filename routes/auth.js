@@ -1,6 +1,8 @@
 
 
 var mongo = require('mongodb');
+var jwt = require('jsonwebtoken');
+var secret = 'this is the secret secret secret 12356';
 
 
 
@@ -15,8 +17,8 @@ mongo.MongoClient.connect(mongoUri, function(err, db) {
                 
 				var user = [
 							{
-						        user_id: "tlf",
-						        token: "md5(kode+tlf)"
+						        mail: "unique@user.id",
+						        password: "1234"
 						    }];
  
 			    db.collection('auth', function(err, collection) {
@@ -33,7 +35,7 @@ exports.addUser = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
 	    if(!err) {
 		    var user = req.body;
-		    console.log('Adding User: ' + JSON.stringify(auth)); // should be removed before production!!!!!!!!
+		    console.log('Adding User: ' + JSON.stringify(user)); // should be removed before production!!!!!!!!
 		    db.collection('auth', function(err, collection) {
 		        collection.insert(user, {safe:true}, function(err, result) {
 		            if (err) {
@@ -47,6 +49,32 @@ exports.addUser = function(req, res) {
 		}
 	});    
 }
+
+exports.checkUser = function(req, res) {
+    mongo.MongoClient.connect(mongoUri, function(err, db) {
+	    if(!err) {
+		    var user = req.body;
+		    console.log('Checking User: ' + JSON.stringify(user)); // should be removed before production!!!!!!!!
+		    db.collection('auth', function(err, collection) {
+			        collection.find({mail: user.mail, password: user.password}).toArray(function(err, result) {
+		            	if (err) {
+		                	res.send({'error':'An error has occurred'});
+						} else (result){
+		                	console.log('user found: ' + JSON.stringify(result[0]));
+							
+							// generate token here
+							var token = jwt.sign(user, secret, { expiresInMinutes: 60 });
+							console.log('generating token: ' + JSON.stringify(token));
+
+							res.json({ token: token });
+							
+						}
+					});
+		        });
+		    }
+	});    
+}
+
 
 exports.findAll = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
