@@ -41,8 +41,10 @@ exports.addUser = function(req, res) {
 		            if (err) {
 		                res.send({'error':'An error has occurred'});
 		            } else {
-		                console.log('Success: ' + JSON.stringify(result[0]));
-		                res.send(result);
+		                var token = jwt.sign(user, secret, { expiresInMinutes: 60 });
+						console.log('generating token: ' + JSON.stringify(token));
+
+						res.json({ token: token });
 		            }
 		        });
 		    });
@@ -59,7 +61,7 @@ exports.checkUser = function(req, res) {
 			        collection.find({mail: user.mail, password: user.password}).toArray(function(err, result) {
 		            	if (err) {
 		                	res.send({'error':'An error has occurred'});
-						} else (result){
+						} else if (!!result[0]){
 		                	console.log('user found: ' + JSON.stringify(result[0]));
 							
 							// generate token here
@@ -68,6 +70,9 @@ exports.checkUser = function(req, res) {
 
 							res.json({ token: token });
 							
+						} else{
+							console.log('user not found!');
+							res.send({'error':'User Not Found. Wrong Email or Password.'});
 						}
 					});
 		        });
