@@ -9,24 +9,31 @@ var secret = 'this is the secret secret secret 12356';
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/auth';
 
 mongo.MongoClient.connect(mongoUri, function(err, db) {
-    if(!err) {
+    if (err) {
+        console.log("Error on connecting to AUTH: " + err);
+
+    } else if(!err) {
         console.log("Connected to 'Auth' database");
-        db.collection('auth', {strict:true}, function(err, collection) {
+        db.collection('auth', {strict: true}, function (err, collection) {
             if (err) {
                 console.log("The 'Auth' collection doesn't exist. Creating it with sample data...");
-                
-				var user = [
-							{
-						        mail: "unique@user.id",
-						        password: "1234"
-						    }];
- 
-			    db.collection('auth', function(err, collection) {
-			        collection.insert(user, {safe:true}, function(err, result) {});
-			    });
+
+                var user = [
+                    {
+                        mail: "unique@user.id",
+                        password: "1234"
+                    }
+                ];
+
+                db.collection('auth', function (err, collection) {
+                    collection.insert(user, {safe: true}, function (err, result) {
+                    });
+                });
             }
-            
+
         });
+    } else{
+        console.log("??????? on connecting to AUTH: ");
     }
 });
 
@@ -50,7 +57,7 @@ exports.addUser = function(req, res) {
 		    });
 		}
 	});    
-}
+};
 
 exports.checkUser = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
@@ -78,7 +85,7 @@ exports.checkUser = function(req, res) {
 		        });
 		    }
 	});    
-}
+};
 
 
 exports.findAll = function(req, res) {

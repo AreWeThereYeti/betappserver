@@ -35,6 +35,10 @@ app.configure(function () {
   // --------------------------
 
 });
+
+app.get('/debug', bets.findAll);
+app.get('/debug/:username', bets.findBetsForUser);
+
  
 app.get('/bets', bets.findAll);
 app.get('/bets/:username', bets.findBetsForUser);

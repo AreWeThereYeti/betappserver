@@ -73,7 +73,9 @@ exports.findBetsForUser = function(req, res) {
 		    
 		    db.collection('bets', {strict:true}, function(err, collection) {
 		        collection.find({  $or:[{author: username}, {participant: username}] }).toArray(function(err, items) {
+		            console.log('responding with: ' + JSON.stringify(items));
 		            res.send(items);
+		            
 		        });
 		    });
     	}
@@ -111,7 +113,7 @@ exports.addBet = function(req, res) {
 		    });
 		}
 	});    
-}
+};
  
 exports.updateBet = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
@@ -133,7 +135,7 @@ exports.updateBet = function(req, res) {
 		    });
 		}
 	});  
-}
+};
  
 exports.deleteBet = function(req, res) {
     mongo.MongoClient.connect(mongoUri, function(err, db) {
@@ -152,7 +154,7 @@ exports.deleteBet = function(req, res) {
 		    });
 		}
 	});  
-}
+};
  
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
